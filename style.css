@@ -1463,6 +1463,342 @@ a {
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+   AUDIO DROP ZONE
+   ═══════════════════════════════════════════════════════════════════════ */
+.divider-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.divider-text span {
+  padding: 0 10px;
+}
+
+.audio-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 40px 20px;
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--duration) var(--ease);
+  animation: slideUp 0.6s var(--ease) 0.3s both;
+}
+
+.audio-drop-zone:hover {
+  border-color: var(--accent);
+  background: rgba(233, 69, 96, 0.05);
+  color: var(--text-primary);
+}
+
+.audio-drop-zone.active {
+  border-color: var(--accent-end);
+  background: rgba(233, 69, 96, 0.1);
+  transform: scale(1.02);
+  box-shadow: var(--accent-glow);
+}
+
+.audio-drop-zone svg {
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  transition: transform var(--duration) var(--ease);
+}
+
+.audio-drop-zone:hover svg {
+  transform: translateY(-4px);
+  color: var(--accent);
+}
+
+.audio-drop-zone p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.drop-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  max-width: 80%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TAB SWITCHER
+   ═══════════════════════════════════════════════════════════════════════ */
+.tab-bar {
+  display: flex;
+  background: var(--bg-surface);
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  gap: 4px;
+}
+
+.tab-btn {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-pill);
+  transition: all var(--duration) var(--ease);
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+}
+
+.tab-btn.active {
+  color: #fff;
+  background: var(--accent-gradient);
+  box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TOGGLE SWITCH (Side A/B)
+   ═══════════════════════════════════════════════════════════════════════ */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0 6px;
+}
+
+.toggle-row label {
+  margin: 0 !important;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-surface-active);
+  transition: .3s;
+  border-radius: 20px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--text-muted);
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--accent);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+  background-color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   JCARD EXTENDED PANELS & NEW ELEMENTS
+   ═══════════════════════════════════════════════════════════════════════ */
+.jcard-extra {
+  width: 2.5in;
+  flex-shrink: 0;
+}
+
+.extra-panel-content {
+  position: relative;
+  z-index: 2;
+  font-size: 7pt;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  padding: 8px 10px;
+  color: var(--card-text, #e0e0e0);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.side-header {
+  font-weight: 700;
+  color: var(--card-accent, var(--accent-end));
+  border-bottom: 1px solid var(--card-accent, var(--accent-end));
+  margin: 4px 0 2px;
+  padding-bottom: 2px;
+}
+
+.qr-code-container {
+  position: absolute;
+  z-index: 5;
+  background: #fff;
+  padding: 4px;
+  border-radius: 2px;
+  display: none;
+}
+
+.qr-code-container img, .qr-code-container canvas {
+  display: block;
+}
+
+.logo-container {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container svg {
+  fill: currentColor;
+  color: var(--card-text, #e0e0e0);
+  height: 14px;
+  width: auto;
+}
+
+.logo-spine {
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TEXTURE OVERLAYS
+   ═══════════════════════════════════════════════════════════════════════ */
+.texture-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.4;
+}
+
+.texture-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.texture-halftone {
+  background-image: radial-gradient(rgba(0,0,0,0.4) 1px, transparent 1px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+}
+
+.texture-worn {
+  background-color: rgba(139, 69, 19, 0.2);
+  background-image: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 120%),
+                    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.texture-vhs {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SHELL LABEL PREVIEW
+   ═══════════════════════════════════════════════════════════════════════ */
+.shell-label {
+  position: relative;
+  width: 3.875in;
+  height: 1.625in;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  overflow: hidden;
+  transform: scale(var(--preview-scale, 2));
+  transform-origin: top center;
+  flex-shrink: 0;
+}
+
+.hub-hole {
+  width: 0.75in;
+  height: 0.75in;
+  border-radius: 50%;
+  background: var(--bg-primary); /* Simulates the cutout */
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+  margin-top: 0.4375in; /* (1.625 - 0.75)/2 */
+  flex-shrink: 0;
+}
+
+.shell-left, .shell-right {
+  flex: 1;
+  padding: 0.15in;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.shell-center {
+  width: 0.5in; /* Space between holes */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.shell-side-label {
+  font-size: 14pt;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.shell-artist {
+  font-size: 8pt;
+  font-weight: 600;
+}
+
+.shell-album {
+  font-size: 7pt;
+  opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    PRINT STYLES
    ═══════════════════════════════════════════════════════════════════════ */
 @media print {
@@ -1504,12 +1840,16 @@ a {
   }
 
   /* Reset the J-card within print area */
-  #printArea .jcard {
+  #printArea .jcard,
+  #printArea .shell-label {
     transform: none !important;
     box-shadow: none !important;
-    border-radius: 0 !important;
     margin: 0 auto;
     position: relative;
+  }
+
+  #printArea .jcard {
+    border-radius: 0 !important;
   }
 
   #printArea .jcard-panel {
@@ -1531,71 +1871,23 @@ a {
     width: 2.5625in;
     height: 4in;
   }
+  
+  #printArea .jcard-extra {
+    width: 2.5in;
+    height: 4in;
+  }
 
   #printArea .fold-line {
     border-left: 1px dashed rgba(0, 0, 0, 0.3) !important;
     height: 4in;
   }
 
-  /* Crop Marks */
+  /* Crop Marks for Jcard */
   #printArea .jcard {
     outline: none;
   }
 
-  #printArea .jcard::before,
-  #printArea .jcard::after {
-    content: '';
-    position: absolute;
-    z-index: 1000;
-    pointer-events: none;
-  }
-
-  /* Top-left crop marks */
-  #printArea::before {
-    content: '';
-    position: absolute;
-    top: calc(50% - 2in - 0.125in);
-    left: calc(50% - 2.0625in - 0.125in);
-    width: 0.125in;
-    height: 0.125in;
-    border-top: 1px solid #000;
-    border-left: 1px solid #000;
-  }
-
-  /* Top-right crop marks */
-  #printArea::after {
-    content: '';
-    position: absolute;
-    top: calc(50% - 2in - 0.125in);
-    right: calc(50% - 2.0625in - 0.125in);
-    width: 0.125in;
-    height: 0.125in;
-    border-top: 1px solid #000;
-    border-right: 1px solid #000;
-  }
-
-  /* Wrapper for bottom crop marks */
-  #printArea .jcard::before {
-    content: '';
-    position: absolute;
-    bottom: -0.125in;
-    left: -0.125in;
-    width: 0.125in;
-    height: 0.125in;
-    border-bottom: 1px solid #000;
-    border-left: 1px solid #000;
-  }
-
-  #printArea .jcard::after {
-    content: '';
-    position: absolute;
-    bottom: -0.125in;
-    right: -0.125in;
-    width: 0.125in;
-    height: 0.125in;
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
-  }
+  /* Only add crop marks to the outer corners, handled by JS now! */
 
   /* Centring wrapper for the card with crop mark space */
   #printArea {
@@ -1622,6 +1914,12 @@ a {
   /* Remove scrollbars */
   body {
     overflow: visible !important;
+  }
+  
+  /* Shell label background needs to be transparent where the holes are, but that's handled by not printing the hub-hole background */
+  #printArea .hub-hole {
+    background: transparent !important;
+    border: 1px dashed rgba(0,0,0,0.5) !important;
   }
 }
 
