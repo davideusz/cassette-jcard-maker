@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassetteForge — J-Card Cover Art Generator</title>
+  <meta name="description" content="Create stunning, print-ready cassette tape J-card covers. Search for album art, customise fonts, colours and layout, then print or export.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Roboto+Mono:wght@400;500&family=Oswald:wght@400;500;600&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SEARCH OVERLAY                                              -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="searchOverlay" class="search-overlay active">
+    <div class="search-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+
+    <div class="search-hero">
+      <div class="logo">
+        <span class="logo-icon">⏏</span>
+        <h1 id="appTitle">CassetteForge</h1>
+      </div>
+      <p class="tagline">Create print-ready cassette tape J-card covers</p>
+
+      <div class="search-box" id="searchBox">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search artist or album…" autocomplete="off" spellcheck="false">
+        <button id="searchBtn" type="button">Search</button>
+      </div>
+
+      <div id="searchStatus" class="search-status"></div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- EDITOR                                                      -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="editor" class="editor hidden">
+
+    <!-- Editor Header -->
+    <header class="editor-header" id="editorHeader">
+      <button id="backToSearch" class="back-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+        New Search
+      </button>
+      <h2 id="editorTitle" class="editor-title">Editing J-Card</h2>
+      <div class="header-actions">
+        <button id="printBtn" class="action-btn print-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print
+        </button>
+        <button id="exportBtn" class="action-btn export-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export PNG
+        </button>
+      </div>
+    </header>
+
+    <!-- Editor Body -->
+    <div class="editor-body">
+
+      <!-- ── LEFT SIDEBAR: Design Controls ── -->
+      <aside class="sidebar sidebar-left" id="sidebarLeft">
+
+        <!-- Typography -->
+        <details class="panel" open>
+          <summary class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            Typography
+          </summary>
+          <div class="panel-body">
+            <label for="fontFamily">Font Family</label>
+            <select id="fontFamily">
+              <option value="Inter">Inter</option>
+              <option value="Bebas Neue">Bebas Neue</option>
+              <option value="Playfair Display">Playfair Display</option>
+              <option value="Roboto Mono">Roboto Mono</option>
+              <option value="Oswald">Oswald</option>
+              <option value="Permanent Marker">Permanent Marker</option>
+            </select>
+
+            <label for="titleSize">Title Size <span class="range-val" id="titleSizeVal">14pt</span></label>
+            <input type="range" id="titleSize" min="8" max="28" value="14" step="1">
+
+            <label for="artistSize">Artist Size <span class="range-val" id="artistSizeVal">11pt</span></label>
+            <input type="range" id="artistSize" min="6" max="22" value="11" step="1">
+
+            <label for="trackSize">Track Size <span class="range-val" id="trackSizeVal">7pt</span></label>
+            <input type="range" id="trackSize" min="5" max="14" value="7" step="0.5">
+
+            <label for="fontWeight">Font Weight</label>
+            <select id="fontWeight">
+              <option value="300">Light</option>
+              <option value="400" selected>Regular</option>
+              <option value="500">Medium</option>
+              <option value="600">Semi Bold</option>
+              <option value="700">Bold</option>
+            </select>
+          </div>
+        </details>
+
+        <!-- Colors -->
+        <details class="panel" open>
+          <summary class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            Colors
+          </summary>
+          <div class="panel-body">
+            <label for="themePreset">Theme Preset</label>
+            <select id="themePreset">
+              <option value="custom">Custom</option>
+              <option value="classic">Classic (White)</option>
+              <option value="midnight" selected>Midnight</option>
+              <option value="retro">Retro Amber</option>
+              <option value="neon">Neon Glow</option>
+              <option value="minimal">Minimal Grey</option>
+              <option value="forest">Forest</option>
+            </select>
+
+            <div class="color-row">
+              <div class="color-field">
+                <label for="bgColor">Background</label>
+                <input type="color" id="bgColor" value="#1a1a2e">
+              </div>
+              <div class="color-field">
+                <label for="textColor">Text</label>
+                <input type="color" id="textColor" value="#e0e0e0">
+              </div>
+              <div class="color-field">
+                <label for="accentColor">Accent</label>
+                <input type="color" id="accentColor" value="#e94560">
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Layout -->
+        <details class="panel" open>
+          <summary class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            Layout
+          </summary>
+          <div class="panel-body">
+            <label for="coverPosition">Cover Art Position</label>
+            <select id="coverPosition">
+              <option value="front" selected>Front Only</option>
+              <option value="back">Back Only</option>
+              <option value="both">Front &amp; Back</option>
+              <option value="none">No Cover Art</option>
+            </select>
+
+            <label for="textAlign">Text Alignment</label>
+            <select id="textAlign">
+              <option value="left">Left</option>
+              <option value="center" selected>Centre</option>
+              <option value="right">Right</option>
+            </select>
+
+            <label for="spineDirection">Spine Text</label>
+            <select id="spineDirection">
+              <option value="btl" selected>Bottom → Top</option>
+              <option value="ttb">Top → Bottom</option>
+              <option value="horizontal">Horizontal (Stacked)</option>
+            </select>
+
+            <label for="coverFit">Cover Art Fit</label>
+            <select id="coverFit">
+              <option value="cover" selected>Fill (Crop)</option>
+              <option value="contain">Fit (Letterbox)</option>
+              <option value="stretch">Stretch</option>
+            </select>
+          </div>
+        </details>
+
+        <!-- Image -->
+        <details class="panel">
+          <summary class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Image
+          </summary>
+          <div class="panel-body">
+            <label class="upload-label" for="customImage" id="uploadLabel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Custom Image
+            </label>
+            <input type="file" id="customImage" accept="image/*" class="sr-only">
+            <button id="resetImage" class="small-btn" type="button">Reset to Original</button>
+          </div>
+        </details>
+      </aside>
+
+      <!-- ── CENTRE: J-Card Preview ── -->
+      <main class="preview-area" id="previewArea">
+        <div class="preview-wrapper">
+          <div class="preview-container" id="previewContainer">
+
+            <!-- The J-Card (actual dimensions) -->
+            <div id="jcard" class="jcard">
+              <!-- Back Flap -->
+              <div class="jcard-panel jcard-back" id="jcardBack">
+                <div class="panel-inner">
+                  <div class="back-art" id="backArt"></div>
+                  <div class="track-list" id="trackListDisplay"></div>
+                  <div class="back-notes" id="backNotesDisplay"></div>
+                </div>
+              </div>
+              <!-- Fold Line -->
+              <div class="fold-line"></div>
+              <!-- Spine -->
+              <div class="jcard-panel jcard-spine" id="jcardSpine">
+                <span class="spine-text" id="spineText"></span>
+              </div>
+              <!-- Fold Line -->
+              <div class="fold-line"></div>
+              <!-- Front Cover -->
+              <div class="jcard-panel jcard-front" id="jcardFront">
+                <div class="panel-inner">
+                  <div class="front-art" id="frontArt"></div>
+                  <div class="front-text-overlay">
+                    <div class="front-title" id="frontTitleDisplay"></div>
+                    <div class="front-artist" id="frontArtistDisplay"></div>
+                    <div class="front-year" id="frontYearDisplay"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Panel Labels -->
+          <div class="panel-labels">
+            <span class="label-back">Back Flap (1 1/16″)</span>
+            <span class="label-spine">Spine (½″)</span>
+            <span class="label-front">Front Cover (2 9/16″)</span>
+          </div>
+
+          <!-- Zoom Controls -->
+          <div class="zoom-controls">
+            <button id="zoomOut" class="zoom-btn" type="button">−</button>
+            <span id="zoomLevel" class="zoom-level">150%</span>
+            <button id="zoomIn" class="zoom-btn" type="button">+</button>
+            <button id="zoomFit" class="zoom-btn zoom-fit" type="button">Fit</button>
+          </div>
+        </div>
+      </main>
+
+      <!-- ── RIGHT SIDEBAR: Text Content ── -->
+      <aside class="sidebar sidebar-right" id="sidebarRight">
+
+        <details class="panel" open>
+          <summary class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Text Content
+          </summary>
+          <div class="panel-body">
+            <label for="artistName">Artist Name</label>
+            <input type="text" id="artistName" placeholder="Artist name…">
+
+            <label for="albumTitle">Album Title</label>
+            <input type="text" id="albumTitle" placeholder="Album title…">
+
+            <label for="yearInput">Year</label>
+            <input type="text" id="yearInput" placeholder="Year…" maxlength="10">
+
+            <label for="trackListInput">Track Listing</label>
+            <textarea id="trackListInput" rows="8" placeholder="1. Track One&#10;2. Track Two&#10;3. Track Three&#10;…"></textarea>
+
+            <label for="notesInput">Notes / Credits</label>
+            <textarea id="notesInput" rows="3" placeholder="Additional notes…"></textarea>
+
+            <label for="spineCustom">Spine Text</label>
+            <input type="text" id="spineCustom" placeholder="Auto: Artist — Album">
+          </div>
+        </details>
+
+      </aside>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PRINT-ONLY J-CARD (cloned at print time)                   -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="printArea" class="print-area"></div>
+
+  <!-- html2canvas for PNG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

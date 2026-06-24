@@ -1,5 +1,3 @@
-# cassette-jcard-maker
-Free cassette J-card insert generator featuring MusicBrainz album search, live interactive preview, typography and color customization, and print-ready layouts.
 # CassetteForge — Cassette J-Card Generator
 
 A lightweight, browser-based web application to search, customize, and print audio cassette tape J-card covers. 
@@ -50,3 +48,34 @@ Because this is a serverless static web application, no installation or build st
 Using Python:
 ```bash
 python -m http.server 8080
+```
+Using Node.js (`http-server`):
+```bash
+npx http-server -p 8080
+```
+Then navigate to `http://localhost:8080` in your browser.
+
+---
+
+## Printing Instructions
+
+To ensure the J-card prints at the correct physical size:
+
+1. Click the **Print** button in the app or press `Ctrl + P`.
+2. In the browser print dialog:
+   - Set **Destination** to your printer or "Save as PDF".
+   - Set **Layout** to **Landscape**.
+   - Set **Paper Size** to Letter or A4.
+   - Set **Margins** to **Default** or **None** (do not use "Fit to page" or scaling options).
+   - Ensure **Scale** is set to **100%**.
+   - **Crucial:** Enable the **Background graphics** option to ensure colors and images print correctly.
+
+---
+
+## Technologies Used
+
+- **HTML5 & CSS3:** Semantics, custom properties, CSS Grid/Flexbox, CSS Transitions, and `@media print` styles.
+- **Vanilla JavaScript:** DOM manipulation, asynchronous fetch requests, and state management.
+- **[html2canvas](https://github.com/niklasvh/html2canvas):** Client-side rendering of the J-card element to a downloadable PNG.
+- **[MusicBrainz API](https://musicbrainz.org/doc/MusicBrainz_API):** Public database query.
+- **[Cover Art Archive API](https://coverartarchive.org/):** Album artwork repository.
