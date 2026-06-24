@@ -230,9 +230,9 @@
     });
 
     return {
-      single: singleList.join('\\n'),
-      sideA: sideA.join('\\n'),
-      sideB: sideB.join('\\n')
+      single: singleList.join('\n'),
+      sideA: sideA.join('\n'),
+      sideB: sideB.join('\n')
     };
   }
 
@@ -334,7 +334,7 @@
   }
 
   async function processAudioFiles(files) {
-    const audioFiles = files.filter(f => f.type.startsWith('audio/') || f.name.match(/\\.(mp3|flac|ogg|m4a|aac|wav)$/i));
+    const audioFiles = files.filter(f => f.type.startsWith('audio/') || f.name.match(/\.(mp3|flac|ogg|m4a|aac|wav)$/i));
     if (audioFiles.length === 0) return;
 
     el.searchStatus.innerHTML = '<span class="loading-spinner"></span> Extracting metadata…';
@@ -360,21 +360,21 @@
           const { data, format } = tag.picture;
           let base64String = "";
           for (let i = 0; i < data.length; i++) { base64String += String.fromCharCode(data[i]); }
-          coverArtDataUrl = \`data:\${format};base64,\${window.btoa(base64String)}\`;
+          coverArtDataUrl = `data:${format};base64,${window.btoa(base64String)}`;
         }
         
         tracksData.push({
           num: tag.track ? parseInt(tag.track.split('/')[0]) : 999,
-          title: tag.title || file.name.replace(/\\.[^/.]+$/, "")
+          title: tag.title || file.name.replace(/\.[^/.]+$/, "")
         });
       } catch (err) {
         // Fallback for missing tags
-        tracksData.push({ num: 999, title: file.name.replace(/\\.[^/.]+$/, "") });
+        tracksData.push({ num: 999, title: file.name.replace(/\.[^/.]+$/, "") });
       }
     }
 
     tracksData.sort((a, b) => a.num - b.num);
-    const trackStr = tracksData.map((t, i) => \`\${i+1}. \${t.title}\`).join('\\n');
+    const trackStr = tracksData.map((t, i) => `${i+1}. ${t.title}`).join('\n');
     
     // Split into A/B artificially for demo if more than 4 tracks
     let sideA = trackStr;
@@ -382,8 +382,8 @@
     let enableSides = false;
     if (tracksData.length > 4) {
       const mid = Math.ceil(tracksData.length / 2);
-      sideA = tracksData.slice(0, mid).map((t, i) => \`\${i+1}. \${t.title}\`).join('\\n');
-      sideB = tracksData.slice(mid).map((t, i) => \`\${mid+i+1}. \${t.title}\`).join('\\n');
+      sideA = tracksData.slice(0, mid).map((t, i) => `${i+1}. ${t.title}`).join('\n');
+      sideB = tracksData.slice(mid).map((t, i) => `${mid+i+1}. ${t.title}`).join('\n');
       enableSides = true;
     }
 
@@ -452,11 +452,11 @@
     el.overlayFilter.value = s.overlayFilter;
     el.overlayOpacity.value = s.overlayOpacity;
 
-    el.titleSizeVal.textContent = \`\${s.titleSize}pt\`;
-    el.artistSizeVal.textContent = \`\${s.artistSize}pt\`;
-    el.trackSizeVal.textContent = \`\${s.trackSize}pt\`;
-    el.qrSizeVal.textContent = \`\${s.qrSize}px\`;
-    el.overlayOpacityVal.textContent = \`\${s.overlayOpacity}%\`;
+    el.titleSizeVal.textContent = `${s.titleSize}pt`;
+    el.artistSizeVal.textContent = `${s.artistSize}pt`;
+    el.trackSizeVal.textContent = `${s.trackSize}pt`;
+    el.qrSizeVal.textContent = `${s.qrSize}px`;
+    el.overlayOpacityVal.textContent = `${s.overlayOpacity}%`;
 
     toggleSidePanels();
     toggleExtraPanels();
@@ -489,8 +489,6 @@
   // UPDATE PREVIEW (J-Card & Shell)
   // ═══════════════════════════════════════════════════════════════════════════
 
-  let currentQrUrl = '';
-
   function updatePreview() {
     const s = state.settings;
     const artUrl = state.customImageUrl || state.coverArtUrl;
@@ -499,7 +497,7 @@
     const objectFit = s.coverFit === 'stretch' ? 'fill' : s.coverFit;
 
     // ── Font & Core ──
-    const fontStr = \`'\${s.fontFamily}', sans-serif\`;
+    const fontStr = `'${s.fontFamily}', sans-serif`;
     el.jcardFront.style.backgroundColor = s.bgColor;
     el.jcardFront.style.color = s.textColor;
     el.jcardBack.style.backgroundColor = s.bgColor;
@@ -517,35 +515,35 @@
     // ── Front Panel ──
     renderArtImage(el.frontArt, (s.coverPosition === 'front' || s.coverPosition === 'both') ? artUrl : null, objectFit);
     el.frontTitleDisplay.textContent = s.albumTitle;
-    el.frontTitleDisplay.style.fontSize = \`\${s.titleSize}pt\`;
+    el.frontTitleDisplay.style.fontSize = `${s.titleSize}pt`;
     el.frontArtistDisplay.textContent = s.artistName;
-    el.frontArtistDisplay.style.fontSize = \`\${s.artistSize}pt\`;
+    el.frontArtistDisplay.style.fontSize = `${s.artistSize}pt`;
     el.frontArtistDisplay.style.color = s.accentColor;
     el.frontYearDisplay.textContent = s.year;
-    el.frontYearDisplay.style.fontSize = \`\${Math.max(6, s.artistSize - 2)}pt\`;
+    el.frontYearDisplay.style.fontSize = `${Math.max(6, s.artistSize - 2)}pt`;
 
     // ── Spine ──
-    el.spineText.textContent = s.spineCustom.trim() ? s.spineCustom : \`\${s.artistName.toUpperCase()} — \${s.albumTitle.toUpperCase()}\`;
+    el.spineText.textContent = s.spineCustom.trim() ? s.spineCustom : `${s.artistName.toUpperCase()} — ${s.albumTitle.toUpperCase()}`;
     el.spineText.style.color = s.accentColor;
     el.spineText.style.fontFamily = fontStr;
-    el.jcardSpine.className = \`jcard-panel jcard-spine spine-\${s.spineDirection}\`;
+    el.jcardSpine.className = `jcard-panel jcard-spine spine-${s.spineDirection}`;
 
     // ── Back Panel (Tracks & Sides) ──
     renderArtImage(el.backArt, (s.coverPosition === 'back' || s.coverPosition === 'both') ? artUrl : null, objectFit);
     
     let trackHtml = '';
     if (s.enableSides) {
-      if (s.tracksSideA) trackHtml += \`<div class="side-header" style="border-color:\${s.accentColor};color:\${s.accentColor}">SIDE A</div><div>\${escapeHtml(s.tracksSideA).replace(/\\n/g, '<br>')}</div>\`;
-      if (s.tracksSideB) trackHtml += \`<div class="side-header" style="border-color:\${s.accentColor};color:\${s.accentColor}">SIDE B</div><div>\${escapeHtml(s.tracksSideB).replace(/\\n/g, '<br>')}</div>\`;
+      if (s.tracksSideA) trackHtml += `<div class="side-header" style="border-color:${s.accentColor};color:${s.accentColor}">SIDE A</div><div>${escapeHtml(s.tracksSideA).replace(/\n/g, '<br>')}</div>`;
+      if (s.tracksSideB) trackHtml += `<div class="side-header" style="border-color:${s.accentColor};color:${s.accentColor}">SIDE B</div><div>${escapeHtml(s.tracksSideB).replace(/\n/g, '<br>')}</div>`;
     } else {
-      trackHtml = escapeHtml(s.trackList).replace(/\\n/g, '<br>');
+      trackHtml = escapeHtml(s.trackList).replace(/\n/g, '<br>');
     }
     
     el.trackListDisplay.innerHTML = trackHtml;
-    el.trackListDisplay.style.fontSize = \`\${s.trackSize}pt\`;
+    el.trackListDisplay.style.fontSize = `${s.trackSize}pt`;
     
-    el.backNotesDisplay.innerHTML = escapeHtml(s.notes).replace(/\\n/g, '<br>');
-    el.backNotesDisplay.style.fontSize = \`\${Math.max(5, s.trackSize - 1)}pt\`;
+    el.backNotesDisplay.innerHTML = escapeHtml(s.notes).replace(/\n/g, '<br>');
+    el.backNotesDisplay.style.fontSize = `${Math.max(5, s.trackSize - 1)}pt`;
 
     // ── Extra Panels ──
     const pCount = parseInt(s.panelCount);
@@ -556,13 +554,13 @@
     el.jcardExtra3.style.display = pCount >= 6 ? '' : 'none';
     el.foldExtra3.style.display = pCount >= 6 ? '' : 'none';
     
-    el.extraContent1.innerHTML = escapeHtml(s.extraText1).replace(/\\n/g, '<br>');
-    el.extraContent2.innerHTML = escapeHtml(s.extraText2).replace(/\\n/g, '<br>');
-    el.extraContent3.innerHTML = escapeHtml(s.extraText3).replace(/\\n/g, '<br>');
+    el.extraContent1.innerHTML = escapeHtml(s.extraText1).replace(/\n/g, '<br>');
+    el.extraContent2.innerHTML = escapeHtml(s.extraText2).replace(/\n/g, '<br>');
+    el.extraContent3.innerHTML = escapeHtml(s.extraText3).replace(/\n/g, '<br>');
 
     // ── QR Code ──
     [el.qrBackContainer, el.qrFrontContainer].forEach(c => { c.style.display = 'none'; c.innerHTML = ''; });
-    if (s.qrPosition !== 'none' && s.qrUrl.trim()) {
+    if (s.qrPosition !== 'none' && s.qrUrl.trim() && window.QRCode) {
       const container = s.qrPosition === 'backFlap' ? el.qrBackContainer : el.qrFrontContainer;
       container.style.display = 'block';
       if (s.qrPosition === 'frontBottom') { container.style.bottom = '10px'; container.style.left = '10px'; }
@@ -595,7 +593,7 @@
     // ── Texture Overlay ──
     el.textureOverlay.className = 'texture-overlay';
     if (s.overlayFilter !== 'none') {
-      el.textureOverlay.classList.add(\`texture-\${s.overlayFilter}\`);
+      el.textureOverlay.classList.add(`texture-${s.overlayFilter}`);
       el.textureOverlay.style.opacity = s.overlayOpacity / 100;
     } else {
       el.textureOverlay.style.opacity = 0;
@@ -623,16 +621,16 @@
     
     el.shellTextureOverlay.className = 'texture-overlay';
     if (s.overlayFilter !== 'none') {
-      el.shellTextureOverlay.classList.add(\`texture-\${s.overlayFilter}\`);
+      el.shellTextureOverlay.classList.add(`texture-${s.overlayFilter}`);
       el.shellTextureOverlay.style.opacity = s.overlayOpacity / 100;
     }
 
     // ── Scale ──
-    el.jcard.style.transform = \`scale(\${state.previewScale})\`;
-    el.zoomLevel.textContent = \`\${Math.round(state.previewScale * 100)}%\`;
+    el.jcard.style.transform = `scale(${state.previewScale})`;
+    el.zoomLevel.textContent = `${Math.round(state.previewScale * 100)}%`;
     
-    el.shellLabel.style.transform = \`scale(\${state.shellScale})\`;
-    el.shellZoomLevel.textContent = \`\${Math.round(state.shellScale * 100)}%\`;
+    el.shellLabel.style.transform = `scale(${state.shellScale})`;
+    el.shellZoomLevel.textContent = `${Math.round(state.shellScale * 100)}%`;
   }
 
   function renderArtImage(container, url, objectFit) {
@@ -646,7 +644,7 @@
       container.appendChild(img);
     }
     if (img.src !== url) img.src = url;
-    img.className = \`fit-\${objectFit}\`;
+    img.className = `fit-${objectFit}`;
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -675,7 +673,7 @@
     const bindRange = (id, unit) => {
       el[id].addEventListener('input', () => {
         state.settings[id] = el[id].value;
-        el[id + 'Val'].textContent = \`\${el[id].value}\${unit}\`;
+        el[id + 'Val'].textContent = `${el[id].value}${unit}`;
         updatePreview();
       });
     };
@@ -749,7 +747,7 @@
   function bindZoomControls() {
     el.zoomIn.addEventListener('click', () => { state.previewScale = Math.min(3.0, +(state.previewScale + 0.25).toFixed(2)); updatePreview(); });
     el.zoomOut.addEventListener('click', () => { state.previewScale = Math.max(0.5, +(state.previewScale - 0.25).toFixed(2)); updatePreview(); });
-    el.zoomFit.addEventListener('click', () => { state.previewScale = 1.0; updatePreview(); }); // simplified fit
+    el.zoomFit.addEventListener('click', () => { state.previewScale = 1.0; updatePreview(); });
 
     el.shellZoomIn.addEventListener('click', () => { state.shellScale = Math.min(4.0, +(state.shellScale + 0.5).toFixed(2)); updatePreview(); });
     el.shellZoomOut.addEventListener('click', () => { state.shellScale = Math.max(0.5, +(state.shellScale - 0.5).toFixed(2)); updatePreview(); });
@@ -783,14 +781,14 @@
       const cropStyle = '1px solid #000';
       const c = (styles) => { const m = document.createElement('div'); Object.assign(m.style, {position:'absolute', zIndex:'100', ...styles}); return m; };
       
-      page.appendChild(c({ top: '5px', left: '20px', width: \`\${cropLength}px\`, height: '0', borderTop: cropStyle }));
-      page.appendChild(c({ top: '20px', left: '5px', width: '0', height: \`\${cropLength}px\`, borderLeft: cropStyle }));
-      page.appendChild(c({ top: '5px', right: '20px', width: \`\${cropLength}px\`, height: '0', borderTop: cropStyle }));
-      page.appendChild(c({ top: '20px', right: '5px', width: '0', height: \`\${cropLength}px\`, borderRight: cropStyle }));
-      page.appendChild(c({ bottom: '5px', left: '20px', width: \`\${cropLength}px\`, height: '0', borderBottom: cropStyle }));
-      page.appendChild(c({ bottom: '20px', left: '5px', width: '0', height: \`\${cropLength}px\`, borderLeft: cropStyle }));
-      page.appendChild(c({ bottom: '5px', right: '20px', width: \`\${cropLength}px\`, height: '0', borderBottom: cropStyle }));
-      page.appendChild(c({ bottom: '20px', right: '5px', width: '0', height: \`\${cropLength}px\`, borderRight: cropStyle }));
+      page.appendChild(c({ top: '5px', left: '20px', width: `${cropLength}px`, height: '0', borderTop: cropStyle }));
+      page.appendChild(c({ top: '20px', left: '5px', width: '0', height: `${cropLength}px`, borderLeft: cropStyle }));
+      page.appendChild(c({ top: '5px', right: '20px', width: `${cropLength}px`, height: '0', borderTop: cropStyle }));
+      page.appendChild(c({ top: '20px', right: '5px', width: '0', height: `${cropLength}px`, borderRight: cropStyle }));
+      page.appendChild(c({ bottom: '5px', left: '20px', width: `${cropLength}px`, height: '0', borderBottom: cropStyle }));
+      page.appendChild(c({ bottom: '20px', left: '5px', width: '0', height: `${cropLength}px`, borderLeft: cropStyle }));
+      page.appendChild(c({ bottom: '5px', right: '20px', width: `${cropLength}px`, height: '0', borderBottom: cropStyle }));
+      page.appendChild(c({ bottom: '20px', right: '5px', width: '0', height: `${cropLength}px`, borderRight: cropStyle }));
     }
 
     page.appendChild(clone);
@@ -815,7 +813,7 @@
 
       canvas.toBlob((blob) => {
         if (!blob) return;
-        const filename = \`\${slugify(state.settings.artistName || 'artist')}-\${slugify(state.settings.albumTitle || 'album')}-\${state.activeTab}.png\`;
+        const filename = `${slugify(state.settings.artistName || 'artist')}-${slugify(state.settings.albumTitle || 'album')}-${state.activeTab}.png`;
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -825,7 +823,7 @@
         setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(url); }, 100);
       }, 'image/png');
     } catch (err) {
-      alert(\`Export failed: \${err.message}\`);
+      alert(`Export failed: ${err.message}`);
     } finally {
       card.style.transform = originalTransform;
     }
